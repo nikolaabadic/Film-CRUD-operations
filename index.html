@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ITEH</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    <body class="main-bg">
+        <div class="container">
+            <div class="row justify-content-center mt-5">
+              <div class="col-lg-4 col-md-6 col-sm-6">
+                <div class="card shadow">
+                  <div class="card-title text-center border-bottom">
+                    <h2 class="p-3">Welcome!</h2>
+                  </div>
+                  <div class="card-body">
+                    <form method="post" action="login.php">
+                      <div class="mb-4">
+                        <label for="username" class="form-label">Username/Email</label>
+                        <input type="text" class="form-control" id="email" value="nikolaabadic@gmail.com"/>
+                      </div>
+                      <div class="mb-4">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" value="1111"/>
+                      </div>
+                      <div class="d-grid">
+                        <p id="response"></p>
+                        <input type="button" value="Log in" id="login" class="btn text-light main-bg"></input>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $.ajax({
+                    url: 'session.php',
+                    method: 'POST',
+                    dataType: 'text',
+                    success: function(response){
+                        if(response == 'loggedIn'){
+                            window.location.href = 'hidden.php';
+                        }
+                    }
+                })
+                $("#login").on('click', function() {
+                    const email = $("#email").val()
+                    const password = $("#password").val()
+
+                    if(email === "" || password === ""){
+                        alert('Please enter your email and password.')
+                    } else {
+                        $.ajax(
+                            {
+                                url: 'session.php',
+                                method: 'POST',
+                                data: {
+                                    login: 1,
+                                    email: email,
+                                    password: password
+                                },
+                                success: function(response){
+                                    $("#response").html(response)
+                                    if(response.indexOf('success')>=0){
+                                        window.location = 'hidden.php';
+                                    }
+                                },
+                                dataType: 'text'
+                            }
+                        )
+                    }
+                })
+            })
+        </script>
+    </body>
+</html>
+
+
